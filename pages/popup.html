@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style/popup.css" />
+    <script src="../scripts/popup.js" type="module"></script>
+  </head>
+  <body>
+    <h1>MySCPList</h1>
+    <!-- Add this to the about MSL page
+      <blockquote>
+      <p>MySCPList (MSL) is designed to help Foundation Personnel keep track of, annotate, and rate, the files they have reviewed.</p></br>
+      <p>Using MSL is easy: click on the extension on any page on the wiki. From here, you are able to quickly rate the page, add it to an existing list, or even find similar articles.</p></br>
+      <p>MSL is also made to be somewhat customizeable, through a page on the extension. These settings can also be changed through settings.json.</p></br>
+      <p>With that, you should be ready to start using MSL. If you have any issues with the extension, or any feature ideas, feel free to send me an email at wapatmore@gmail.com</p></br>
+    </blockquote>
+    -->
+    <button id="list-button">My Lists</button></br>
+    <button id="rec-button">Find New Articles</button></br>
+    <button id="option-button">Options</button>
+    <div class="new-entry">
+      <hr>
+      <select id="rating-box"></select>
+      <input id="notes-box" placeholder="Notes, description, review, etc."></input>
+      <button id="entry-button" type="submit">Add to list</button>
+      <p id="entry-notification"></p>
+    </div>
+  </body>
+</html>

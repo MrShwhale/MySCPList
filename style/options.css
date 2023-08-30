@@ -1,0 +1,8 @@
+.option {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+#option-list {
+    display: grid;
+}

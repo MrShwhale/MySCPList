@@ -1,0 +1,66 @@
+body {
+    background-color: #fff;
+    font-size: .95em;
+    color: #333;
+    font-family: Inter,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans','Helvetica Neue',sans-serif;
+    font-feature-settings: 'case','ss01','ss04';
+}
+
+h1 {
+  color: #901;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Trebuchet MS", Trebuchet, Verdana, Arial, Helvetica;
+}
+
+p {
+  color: #333;
+}
+
+blockquote {
+    border: 1px dashed #999;
+    padding: 0 1em;
+    background-color: #f4f4f4;
+}
+
+button {
+    margin: 1em 0;
+    font-size: 1.5em;
+}
+
+#page-title {
+    text-align: center;
+}
+
+table {
+    border: 1px solid;
+    margin: auto;
+    width: 60%;
+    border-collapse: collapse;
+}
+
+tr {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+th, td {
+    text-align: left;
+    padding: 0 1em;
+    border: 1px solid;
+}
+
+#rating-header {
+    width: 5em;
+}
+
+.hide-row {
+    display: none !important;
+}
+
+.expanded-row-content {
+    display: grid;
+    grid-column: 1/-1;
+    background-color: #E7E7E7;
+}
