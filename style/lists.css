@@ -1,27 +1,8 @@
+@import "./sigma9.css";
+
 body {
-    background-color: #fff;
-    font-size: .95em;
-    color: #333;
-    font-family: Inter,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans','Helvetica Neue',sans-serif;
-    font-feature-settings: 'case','ss01','ss04';
-}
-
-h1 {
-  color: #901;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: "Trebuchet MS", Trebuchet, Verdana, Arial, Helvetica;
-}
-
-p {
-  color: #333;
-}
-
-blockquote {
-    border: 1px dashed #999;
-    padding: 0 1em;
-    background-color: #f4f4f4;
+/* More in line with wiki pages, no clue why it is not in the sigma9 */
+    font-size: 0.95em;
 }
 
 button {
@@ -34,21 +15,54 @@ button {
 }
 
 table {
-    border: 1px solid;
+    border: 3px solid lightgray;
+    border-radius: 10px;
     margin: auto;
     width: 60%;
-    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: auto;
 }
 
 tr {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 30% 25% 7% 19% 19%;
 }
 
-th, td {
+/* Shenanigans for rounded corners */
+tr:last-child > td {
+    border-bottom: none;
+}
+
+td:nth-child(5) {
+    border-right: none;
+}
+
+td:last-child {
+    border-right: none;
+}
+
+tr:last-child > td:last-child {
+    border-right: none;
+    border-radius: 0 0 6px 6px;
+    border-top: 1px solid;
+}
+
+th:last-child {
+    border-right: none;
+}
+
+
+th {
+    text-align: center;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+td {
     text-align: left;
     padding: 0 1em;
-    border: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
 }
 
 #rating-header {
@@ -62,5 +76,5 @@ th, td {
 .expanded-row-content {
     display: grid;
     grid-column: 1/-1;
-    background-color: #E7E7E7;
+    background-color: #F4F4F4;
 }
