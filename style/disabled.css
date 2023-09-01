@@ -1,0 +1,17 @@
+@import "sigma9.css";
+
+html {
+    width: 200px;
+    height: 500px;
+}
+
+button {
+    font-size: 1.5em;
+    margin: 0.5em 1em;
+    padding: auto;
+}
+
+#container {
+    display: grid;
+    grid-template-columns: repeat(150px, 3);
+}

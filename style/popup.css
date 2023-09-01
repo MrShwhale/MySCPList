@@ -12,8 +12,10 @@ button {
 
 textarea {
     resize: none;
-    margin: 0.7em 0;
+    margin: 0.75em 0 0 0;
     height: 85%;
+    grid-column: 2;
+    grid-row: 1 / 5;
 }
 
 #selector {
@@ -23,19 +25,19 @@ textarea {
 
 #selector > button {
   padding: 0;
-  margin: 0.5em 0;
-  border: 2px;
-  border-radius: 0;
+  margin: auto 0;
+  border: 0;
   font-size: 1em;
+}
+
+#content-wrapper {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: repeat(5, 1fr);
 }
 
 .selected-rating {
     border: 2px black solid !important;
-}
-
-.new-entry {
-    display: grid;
-    grid-template-columns: repeat(2, 50%);
 }
 
 .failed-entry, .successful-entry {

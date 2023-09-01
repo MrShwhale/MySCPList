@@ -95,9 +95,8 @@ async function getActiveTab() {
 document.addEventListener("DOMContentLoaded", async () => {
   const activeTab = await getActiveTab();
   if (!activeTab.url.startsWith(SCP_URL) || activeTab.url == SCP_URL) {
-    const container = document.getElementsByClassName("new-entry")[0];
-
-    container.innerHTML = '';
+    // Redirect to the nonwiki page
+    window.location.href = "../pages/disabled.html";
   }  
 });
 
