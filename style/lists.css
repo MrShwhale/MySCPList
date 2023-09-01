@@ -8,17 +8,22 @@ body {
 button {
     margin: 1em 0;
     font-size: 1.5em;
+    border: 2px solid;
 }
 
 #page-title {
     text-align: center;
 }
 
+#rating-header {
+    width: 5em;
+}
+
 table {
     border: 3px solid lightgray;
     border-radius: 10px;
     margin: auto;
-    width: 60%;
+    width: 100%;
     border-spacing: 0;
     table-layout: auto;
 }
@@ -64,10 +69,7 @@ td {
     border-right: 1px solid;
     border-bottom: 1px solid;
 }
-
-#rating-header {
-    width: 5em;
-}
+/* end shenanigans */
 
 .hide-row {
     display: none !important;
@@ -77,4 +79,15 @@ td {
     display: grid;
     grid-column: 1/-1;
     background-color: #F4F4F4;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+}
+
+.selected-list {
+    background-color: #700;
+    color: #fff;
+    border-color: #000;
 }

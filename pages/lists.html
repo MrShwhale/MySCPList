@@ -11,17 +11,23 @@
   <body>
     <h1 id="page-title">Lists</h1>
 
-    <!-- TODO: add plus button which shows if the user has extended a note -->
-    <div class="list-buttons"></div>
-    <table id="list-table">
-      <tr>
-        <th>Title</th>
-        <th>Author(s)</th>
-        <th>Rating</th>
-        <th>Entry Updated</th>
-        <th>Entry Added</th>
-      </tr>
-    </table>
+    <div class="container">
+      <div class="list-buttons">
+        <button class="selected-list" id="completed">Completed</button>
+        <button id="toRead">Reading list</button>
+      </div>
+      <!-- TODO: add plus button which shows if the user has extended a note -->
+      <table id="list-table">
+        <tr>
+          <th>Title</th>
+          <th>Author(s)</th>
+          <th>Rating</th>
+          <th>Entry Updated</th>
+          <th>Entry Added</th>
+        </tr>
+      </table>
+      <div></div>
+    </div>
 
   </body>
 </html>
