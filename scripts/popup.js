@@ -1,5 +1,48 @@
 const SCP_URL = "https://scp-wiki.wikidot.com/"
 
+
+// Making the score selector
+/** CODE FROM: https://stackoverflow.com/questions/4161369/html-color-codes-red-to-yellow-to-green, Ascendant's answer
+ * Converts integer to a hexidecimal code, prepad's single 
+ * digit hex codes with 0 to always return a two digit code. 
+ * 
+ * @param {Integer} i Integer to convert 
+ * @returns {String} The hexidecimal code
+ */
+function intToHex(i) {
+    var hex = parseInt(i).toString(16);
+    return (hex.length < 2) ? "0" + hex : hex;
+}   
+
+/**
+ * Return hex color from scalar *value*.
+ *
+ * @param {float} value Scalar value between 0 and 1
+ * @return {String} color
+ */
+function makeColor(value) {
+    // value must be between [0, 510]
+    value = Math.min(Math.max(0,value), 1) * 510;
+
+    var redValue;
+    var greenValue;
+    if (value < 255) {
+        redValue = 255;
+        greenValue = Math.sqrt(value) * 16;
+        greenValue = Math.round(greenValue);
+    } else {
+        greenValue = 255;
+        value = value - 255;
+        redValue = 255 - (value * value / 255)
+        redValue = Math.round(redValue);
+    }
+
+    return "#" + intToHex(redValue) + intToHex(greenValue) + "00";
+}
+
+
+
+
 function openInNewTab(url) {
   console.log("attempting to make " + url);
   chrome.tabs.create(
@@ -58,13 +101,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }  
 });
 
-function createRatingElement() {
-  const ratingParent = document.getElementById("rating-box")
-  for (let i = 1; i < 11; i++) {
-    ratingParent.appendChild(new Option(i,i));
-  }
-}
-
 function addButtonListeners() {
   document.getElementById("list-button").addEventListener("click", function() {
     openInNewTab("../pages/lists.html");
@@ -98,7 +134,8 @@ function addButtonListeners() {
       const title = activeTab.title.substring(0, activeTab.title.lastIndexOf(" - SCP Foundation"));
       const url = activeTab.url.substring(SCP_URL.length);
 
-      markRead(url, title, authors, document.getElementById("rating-box").value, document.getElementById("notes-box").value, Date.now());
+      console.log(document.getElementsByClassName("selected-rating")[0].innerHTML)
+      markRead(url, title, authors, parseInt(document.getElementsByClassName("selected-rating")[0].innerHTML), document.getElementById("notes-box").value, Date.now());
       
       // Tell the user that it was successful
       entryStatus = "successful-entry";
@@ -118,5 +155,26 @@ function addButtonListeners() {
   });
 }
 
-createRatingElement();
+function makeScoreSelector() {
+  const selector = document.getElementById("selector");
+  for (let i = 1; i <= 10; i++) {
+    const nextButton = document.createElement("button");
+    nextButton.setAttribute("id", "select-" + i);
+    nextButton.setAttribute("style", "background-color: " + makeColor((i-1)/10))
+    nextButton.innerHTML = i;
+    nextButton.addEventListener("click", function() {
+      document.getElementsByClassName("selected-rating")[0].classList.remove("selected-rating");
+      console.log("changed");
+      nextButton.classList.add("selected-rating");
+    })
+
+    if (i == 5) {
+      nextButton.classList.add("selected-rating");
+    }
+    selector.appendChild(nextButton);
+  }
+
+}
+
+makeScoreSelector();
 addButtonListeners();
