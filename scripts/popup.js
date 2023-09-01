@@ -91,10 +91,10 @@ async function getActiveTab() {
   return tab;
 }
 
-// Change the popup if the user is on the main page
+// Change the popup if the user is on the main page or not on the wiki at all
 document.addEventListener("DOMContentLoaded", async () => {
   const activeTab = await getActiveTab();
-  if (activeTab.url == SCP_URL) {
+  if (!activeTab.url.startsWith(SCP_URL) || activeTab.url == SCP_URL) {
     const container = document.getElementsByClassName("new-entry")[0];
 
     container.innerHTML = '';
