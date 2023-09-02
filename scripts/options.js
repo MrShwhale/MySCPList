@@ -11,22 +11,65 @@ function addButtonListeners() {
             var result = JSON.stringify(items);
 
             // Save as file
-            var url = 'data:application/json;base64,' + btoa(result);
-            chrome.downloads.download({
-                url: url,
-                filename: 'MySCPList.json'
-            });
+            try {
+                var url = 'data:application/json;base64,' + btoa(result);
+                chrome.downloads.download({
+                    url: url,
+                    filename: 'MySCPList.json'
+                });
+                alert("Successfully downloaded list");
+            }
+            catch (e) {
+                alert("Error downloading lists");
+            }
         });
     });
 
     document.getElementById("restore-list").addEventListener("click", function() {
-        // Get the value of the file the user picked
-        // Validate it
-        // Try to load it
-        // Inform the users of the result
+        const fileInput = document.getElementById("restore-list-file");
         
-        // Take the loaded JSON, and just put it into storage
-        chrome.storage.set(loaded);
+        // Validate that the file is a JSON
+
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            let loaded = undefined;
+            try {
+                loaded = JSON.parse(reader.result);
+            }
+            catch (e) {
+                alert("Error parsing JSON file");
+                return;
+            }
+
+            try {
+                // Take the loaded JSON, and put it directly into storage
+                chrome.storage.local.set(loaded);
+                alert("Lists restored!");
+            }
+            catch (e) {
+                console.log(e);
+                alert("Error storing JSON data");
+            }
+        };
+
+        reader.onerror = function() {
+            alert("Error reading file.");
+            console.log(reader.error);
+        };
+
+        const file = fileInput.files[0];
+        if (file) {
+            if (file.type == "application/json") {
+                reader.readAsText(file);
+            }
+            else {
+                alert("You must pick a .json file to restore from");
+            }
+        }
+        else {
+            alert("Please select a file to restore from");
+        }
     });
 
 }

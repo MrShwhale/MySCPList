@@ -3,25 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <title>MySCPList Options</title>
+  <link rel="stylesheet" href="../style/options.css"></link>
 </head>
 <body>
+  <h1 style="text-align: center" id="page-title">Options</h1>
   <div id="option-list">
+    <!--
     <div class="option" id="use-cloud-setting">
-      <p class="setting-description">Store data in the google chrome cloud? Allows for sync across browsers, but makes it easier to run into space issues with larger lists.</p>
+      <div>
+        <p class="setting-title">Store data in the google chrome cloud?</p>
+        <p class="setting-description">Allows for sync across browsers, but makes it easier to run into space issues with larger lists.</p>
+      </div>
       <input id="use-cloud" type="checkbox">
     </div>
+    -->
+
     <div class="option" id="restore-list-setting">
-      <p class="setting-description">Select a previously downloaded MySCPList.json file to be loaded. Overwrites your existing list, so make sure to back up!</p>
-      <input id="restore-list-file" type="file"></input>
-      <button id="restore-list">Restore my lists from file</button>
+      <div>
+        <p class="setting-title">Restore MSL from file</p>
+        <p class="setting-description">Select a previously downloaded MySCPList.json file to be loaded. Overwrites your existing list, so make sure to back up!</p>
+      </div>
+      <div id="restore-inputs">
+        <input id="restore-list-file" type="file"></input>
+        <button id="restore-list">Restore</button>
+      </div>
     </div>
     <div class="option" id="download-list-setting">
-      <p class="setting-description">Download your MySCPList. Good idea for safety, also allows for you to take your information and put it on another computer (or do your own thing with it).</p>
+      <div>
+        <p class="setting-title">Download your MySCPList</p>
+        <p class="setting-description">Good idea for safety, also allows for you to take your information and put it on another computer (or do your own thing with it).</p>
+      </div>
       <button id="download-list">Download my lists</button>
     </div>
     <div class="option" id="clear-list-setting">
-      <p class="setting-description">Delete everything off of both the "Completed" and "Reading List" lists. You cannot get this information back without a backup!</p>
-      <button id="clear-list">Clear my lists (for real (you will not have them))</button>  
+      <div>
+        <p class="setting-title">Clear lists</p>
+        <p class="setting-description">Delete everything off of both the "Completed" and "Reading List" lists. You cannot get this information back without a backup!</p>
+      </div>
+      <button id="clear-list">DELETE EVERYTHING</button>  
     </div>
   </div>
   <script src="../scripts/options.js"></script>

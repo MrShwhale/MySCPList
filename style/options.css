@@ -1,8 +1,35 @@
-.option {
+@import "sigma9.css";
+
+button {
+    font-size: 1.5em;
+}
+
+#restore-list-file {
+    font-size: 1.5em;
+}
+
+#restore-inputs {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
 }
 
 #option-list {
     display: grid;
+    width: 60%;
+    margin: auto;
+}
+
+.option {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    padding: 1.2em;
+    border-bottom: 1px solid;
+}
+
+.setting-title {
+    font-size: 1.5em;
+}
+
+.setting-description {
+    font-size: 1em;
 }

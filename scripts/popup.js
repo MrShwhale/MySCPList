@@ -81,7 +81,7 @@ function markRead(listName, url, title, authors, rating, notes, time) {
     chrome.storage.local.set({[otherListName]: newOther});
 
     if (existingIndex == -1) {
-      entries.push(newEntry);
+      entries.unshift(newEntry);
     }
     else {
       const oldTime = entries[existingIndex][6];
