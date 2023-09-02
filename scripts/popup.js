@@ -1,4 +1,5 @@
 const SCP_URL = "https://scp-wiki.wikidot.com/"
+let already_existing = false;
 
 
 // Making the score selector
@@ -124,8 +125,12 @@ async function addEntry() {
       entryStatus = "successful-entry";
 
       // TODO change message text depending on update/addition
-      // entryMessage = "Entry updated";
-      entryMessage = "Entry added";
+      if (already_existing) {
+        entryMessage = "Entry updated";
+      }
+      else {
+        entryMessage = "Entry added";
+      }
     } catch (e) {
       console.log(e.message);
       // Tell the user that it was unsuccessful, and advise reloading the page if it continues to do this
@@ -191,5 +196,33 @@ function makeScoreSelector() {
 
 }
 
+async function getExistingEntry() {
+  const activeTabUrl = (await getActiveTab()).url.substring(SCP_URL.length);
+  chrome.storage.local.get(null).then((data) => {
+    console.log(activeTabUrl);
+    const listNames = ["toRead", "completed"];
+    for (const listName of listNames) {
+      console.log(listName);
+      if (listName in data) {
+        const existingIndex = data[listName].findIndex((element) => {return element[0] == activeTabUrl});
+        console.log(existingIndex);
+        if (existingIndex != -1) {
+          // Set notes to existing notes
+          document.getElementById("notes-box").innerHTML = data[listName][existingIndex][4];
+
+          // Set rating to existing rating, or keep default if on the reading list
+          const rating = data[listName][existingIndex][3];
+          if (rating > 0) {
+            document.getElementById("select-" + rating).click();
+          }
+          already_existing = true;
+          break;
+        }
+      }
+    }
+  });
+}
+
 makeScoreSelector();
 addButtonListeners();
+await getExistingEntry();

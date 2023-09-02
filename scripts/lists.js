@@ -9,11 +9,11 @@ const toggleRow = (element) => {
 }
 
 const headerCompFns = {
-    "Title": (a, b) => {a[1].localeCompare(b[1])},
-    "Author(s)": (a, b) => {a[0][2].localeCompare(b[0][2])},
-    "Rating": (a, b) => {a[3] - (b[3])},
-    "Entry Updated": (a, b) => {a[5] - (b[5])},
-    "Entry Added": (a, b) => {a[6] - (b[6])}
+    "Title": (a, b) => {return a[1].localeCompare(b[1])},
+    "Author(s)": (a, b) => {return a[0][2].localeCompare(b[0][2])},
+    "Rating": (a, b) => {return a[3] - (b[3])},
+    "Entry Updated": (a, b) => {return a[5] - (b[5])},
+    "Entry Added": (a, b) => {return a[6] - (b[6])}
 }
 
 function clearEntries() {
@@ -131,7 +131,7 @@ function displayList(listName) {
             else if (this.classList.contains("sort-descending")) {
                 this.classList.remove("sort-descending");
                 // Since there would normally be no more sort, here indicate the default sort
-                document.getElementById("list-table").firstChild.firstChild.children.item(3).classList.add("sort-ascending");
+                //document.getElementById("list-table").firstChild.firstChild.children.item(3).classList.add("sort-ascending");
                 sortmode = 0;
             }
             else {
