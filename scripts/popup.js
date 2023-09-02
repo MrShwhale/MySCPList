@@ -112,8 +112,13 @@ async function addEntry() {
       const title = activeTab.title.substring(0, activeTab.title.lastIndexOf(" - SCP Foundation"));
       const url = activeTab.url.substring(SCP_URL.length);
 
-      console.log(document.getElementsByClassName("selected-rating")[0].innerHTML)
-      markRead("completed", url, title, authors, parseInt(document.getElementsByClassName("selected-rating")[0].innerHTML), document.getElementById("notes-box").value, Date.now());
+      console.log(this);
+      if (this.getAttribute("id") == "entry-button") {
+        markRead("completed", url, title, authors, parseInt(document.getElementsByClassName("selected-rating")[0].innerHTML), document.getElementById("notes-box").value, Date.now());
+      }
+      else {
+        markRead("toRead", url, title, authors, 0, document.getElementById("notes-box").value, Date.now());
+      }
       
       // Tell the user that it was successful
       entryStatus = "successful-entry";
@@ -162,46 +167,7 @@ function addButtonListeners() {
 
   document.getElementById("entry-button").addEventListener("click", addEntry);
 
-  document.getElementById("to-read-button").addEventListener("click", async function() {
-    // Get the review from the user, and the author, date, title and url from the site
-
-    let entryStatus = undefined;
-    let entryMessage = undefined;
-
-    try {
-      const activeTab = await getActiveTab();
-
-      const authors = (await chrome.tabs.sendMessage(activeTab.id, {type: "authorRequest"})).authorList;
-
-      // BUG: if there is only 2 authors, they will not split on the "and ". However, a single author might also have an "and " in it.
-      // If there is more than one author remove the "and " from the last one
-      if (authors.length > 1) {
-        authors[authors.length - 1] = authors[authors.length - 1].substring(4);
-      }
-
-      // Remove unneeded parts of the url and title
-      const title = activeTab.title.substring(0, activeTab.title.lastIndexOf(" - SCP Foundation"));
-      const url = activeTab.url.substring(SCP_URL.length);
-
-      console.log(document.getElementsByClassName("selected-rating")[0].innerHTML)
-      markRead("toRead", url, title, authors, 0, document.getElementById("notes-box").value, Date.now());
-      
-      // Tell the user that it was successful
-      entryStatus = "successful-entry";
-
-      // TODO change message text depending on update/addition
-      // entryMessage = "Entry updated";
-      entryMessage = "Entry added";
-    } catch (e) {
-      console.log(e.message);
-      // Tell the user that it was unsuccessful, and advise reloading the page if it continues to do this
-      entryMessage = "Entry failed";
-      entryStatus = "failed-entry";
-    }
-    const notif = document.getElementById("entry-notification");
-    notif.classList.add(entryStatus);
-    notif.innerHTML = entryMessage;
-  });
+  document.getElementById("to-read-button").addEventListener("click", addEntry);
 }
 
 function makeScoreSelector() {

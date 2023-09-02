@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../style/lists.css" />
     <title>View MySCPList</title>
-    <script src="../scripts/listPage.js" type="module"></script>
+    <script src="../scripts/lists.js" type="module"></script>
   </head>
   <body>
     <h1 id="page-title">Lists</h1>
+    <p id="description">Click on an entry to expand it and see your notes.</p>
 
     <div class="container">
       <div class="list-buttons">
@@ -17,15 +18,7 @@
         <button id="toRead">Reading list</button>
       </div>
       <!-- TODO: add plus button which shows if the user has extended a note -->
-      <table id="list-table">
-        <tr>
-          <th>Title</th>
-          <th>Author(s)</th>
-          <th>Rating</th>
-          <th>Entry Updated</th>
-          <th>Entry Added</th>
-        </tr>
-      </table>
+      <table id="list-table"><tbody></tbody></table>
       <div></div>
     </div>
 

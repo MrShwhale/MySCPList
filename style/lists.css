@@ -30,7 +30,7 @@ table {
 
 tr {
     display: grid;
-    grid-template-columns: 30% 25% 7% 19% 19%;
+    grid-template-columns: 30% 22% 10% 19% 19%;
 }
 
 /* Shenanigans for rounded corners */
@@ -71,6 +71,13 @@ td {
 }
 /* end shenanigans */
 
+#description {
+    text-align: center;
+    font-size: 1em;
+    font-style: italic;
+    color: darkgray;
+}
+
 .hide-row {
     display: none !important;
 }
@@ -90,4 +97,19 @@ td {
     background-color: #700;
     color: #fff;
     border-color: #000;
+}
+
+/* Sorting things */
+.sort-ascending {
+    background-image: url("../images/ascending.png");
+}
+
+.sort-descending {
+    background-image: url("../images/descending.png");
+}
+
+.sort-ascending, .sort-descending {
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    background-size: 32px;
 }
