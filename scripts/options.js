@@ -1,6 +1,4 @@
 function addButtonListeners() {
-    // TODO add feedback/notifications to each of these actions
-    
     document.getElementById("clear-list").addEventListener("click", function() {
         chrome.storage.local.clear();
     });

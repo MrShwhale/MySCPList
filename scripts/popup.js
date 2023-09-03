@@ -15,7 +15,7 @@ function intToHex(i) {
     return (hex.length < 2) ? "0" + hex : hex;
 }   
 
-/**
+/** CODE FROM: https://stackoverflow.com/questions/4161369/html-color-codes-red-to-yellow-to-green, Ascendant's answer
  * Return hex color from scalar *value*.
  *
  * @param {float} value Scalar value between 0 and 1
@@ -45,7 +45,6 @@ function makeColor(value) {
 
 
 function openInNewTab(url) {
-  console.log("attempting to make " + url);
   chrome.tabs.create(
     {'url': url}
   );
@@ -54,13 +53,14 @@ function openInNewTab(url) {
 // Marks the entry as read, or updates an existing entry. 
 // If rating is false, then it adds it to the "to read" list instead
 function markRead(listName, url, title, authors, rating, notes, time) {
-  
+  /*
   console.log("URL: " + url);
   console.log("Title: " + title);
   console.log("Authors: " + authors);
   console.log("Rating: " + rating);
   console.log("Notes: " + notes);
   console.log("Time: " + time);
+  */
   
 
   // Entry format: [url, title, authors, rating, notes, enteredTime, updatedTime]
@@ -113,7 +113,6 @@ async function addEntry() {
       const title = activeTab.title.substring(0, activeTab.title.lastIndexOf(" - SCP Foundation"));
       const url = activeTab.url.substring(SCP_URL.length);
 
-      console.log(this);
       if (this.getAttribute("id") == "entry-button") {
         markRead("completed", url, title, authors, parseInt(document.getElementsByClassName("selected-rating")[0].innerHTML), document.getElementById("notes-box").value, Date.now());
       }
@@ -184,7 +183,6 @@ function makeScoreSelector() {
     nextButton.innerHTML = i;
     nextButton.addEventListener("click", function() {
       document.getElementsByClassName("selected-rating")[0].classList.remove("selected-rating");
-      console.log("changed");
       nextButton.classList.add("selected-rating");
     })
 
@@ -199,13 +197,10 @@ function makeScoreSelector() {
 async function getExistingEntry() {
   const activeTabUrl = (await getActiveTab()).url.substring(SCP_URL.length);
   chrome.storage.local.get(null).then((data) => {
-    console.log(activeTabUrl);
     const listNames = ["toRead", "completed"];
     for (const listName of listNames) {
-      console.log(listName);
       if (listName in data) {
         const existingIndex = data[listName].findIndex((element) => {return element[0] == activeTabUrl});
-        console.log(existingIndex);
         if (existingIndex != -1) {
           // Set notes to existing notes
           document.getElementById("notes-box").innerHTML = data[listName][existingIndex][4];

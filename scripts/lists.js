@@ -1,7 +1,3 @@
-// First, add all of the lists that currently exist as buttons
-// Then, load the first list's entries
-// Change these entries when a different list button is pressed
-
 const SCP_URL = "https://scp-wiki.wikidot.com/"
 
 const toggleRow = (element) => {

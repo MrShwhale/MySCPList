@@ -11,13 +11,11 @@ chrome.runtime.onMessage.addListener(
                     // Handle having just 2 authors (split on " and ")
                     if (authors.length == 1) {
                         const andIndex = authors[0].lastIndexOf(" and ");
-                        console.log(andIndex);
-                        console.log(authors);
                         if (andIndex != -1) {
                             authors = [authors[0].substring(0, andIndex), authors[0].substring(andIndex)]
                         }
                     }
-                    console.log("licenseBox found");
+                    console.log("MySCPList: licenseBox found");
                     sendResponse({authorList: authors});
                 }
                 else {
