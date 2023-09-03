@@ -41,9 +41,6 @@ function makeColor(value) {
     return "#" + intToHex(redValue) + intToHex(greenValue) + "00";
 }
 
-
-
-
 function openInNewTab(url) {
   chrome.tabs.create(
     {'url': url}
@@ -102,12 +99,9 @@ async function addEntry() {
     try {
       const activeTab = await getActiveTab();
 
-      const authors = (await chrome.tabs.sendMessage(activeTab.id, {type: "authorRequest"})).authorList;
-
-      // If there is more than one author remove the "and " from the last one
-      if (authors.length > 1) {
-        authors[authors.length - 1] = authors[authors.length - 1].substring(4);
-      }
+      let authors = (await chrome.tabs.sendMessage(activeTab.id, {type: "authorRequest"}));
+      console.log(authors);
+      authors = authors.authorList;
 
       // Remove unneeded parts of the url and title
       const title = activeTab.title.substring(0, activeTab.title.lastIndexOf(" - SCP Foundation"));
