@@ -14,7 +14,4 @@ If you have any feedback, ideas, or want to help development, email me: wapatmor
 - (Coming soon)
 
 # Known bugs
-- When an author whose name has the string " and " in it writes a page alone, the two halves of their name will be recorded individually.
-  - I have some ideas on how to minimize this bug as much as possible, but it might never work properly with multi-author groups.
-- Pages that do not have licenseboxes on them do not have their authors recognized.
-  - I am working on a fix for this using the page history.
+- When the extension is reloaded, all pages need to be reloaded before they can be added
