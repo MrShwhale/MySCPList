@@ -16,6 +16,10 @@ const headerCompFns = {
     "Entry Added": (a, b) => {return a[6] - (b[6])}
 }
 
+// Maybe refactor this? nonconst globals evoke fear
+var global_sortmode = 0;
+var global_sortFunc = () => {};
+
 function clearEntries() {
     const tableBody = document.getElementById("list-table").firstChild;
     
@@ -50,6 +54,7 @@ function displayEntries(listName, sortmode, sortFunc) {
             // Make an element out of this entry
             // Add the row to the table
             const entryRow = listTable.insertRow(-1);
+            entryRow.setAttribute("id", "entry-" + i);
 
             // Page title which is linked to the page
             const pageTitleCell = entryRow.insertCell(0);
@@ -84,15 +89,32 @@ function displayEntries(listName, sortmode, sortFunc) {
             updatedTime.innerHTML = new Date(entries[i][6]).toLocaleString();
             updatedTimeCell.appendChild(updatedTime);
 
+            // Delete button
+            const deleteCell = entryRow.insertCell(5);
+            const deleteButton = document.createElement("img");
+            deleteButton.src = "../images/delete.png"
+            deleteButton.addEventListener("click", (e) => {
+                const entryNumber = e.target.parentElement.parentElement.getAttribute("id").substring(6);
+                const currentList = document.getElementsByClassName("selected-list")[0].getAttribute("id");
+                
+                // Call the chrome storage get, delete that entry, store it back, call displayEntries again
+                chrome.storage.local.get(currentList).then((data) => {
+                    let currentEntries = data[currentList];
+                    currentEntries.splice(entryNumber, 1);
+                    chrome.storage.local.set({[currentList]: currentEntries}).then(() => {displayEntries(currentList, global_sortmode, global_sortFunc);});
+                });
+            });
+            deleteCell.appendChild(deleteButton);
+
             // Notes (hidden)
-            const notesCell = entryRow.insertCell(5);
+            const notesCell = entryRow.insertCell(6);
             const notes = document.createElement("p");
             notes.innerHTML = entries[i][4];
             notesCell.appendChild(notes);
             notesCell.classList.add("expanded-row-content");
             notesCell.classList.add("hide-row");
 
-            entryRow.addEventListener("click", toggleRow);
+            //entryRow.addEventListener("click", toggleRow);
         }
     });
 }
@@ -130,8 +152,9 @@ function displayList(listName) {
             }
             else if (this.classList.contains("sort-descending")) {
                 this.classList.remove("sort-descending");
-                // Since there would normally be no more sort, here indicate the default sort
-                //document.getElementById("list-table").firstChild.firstChild.children.item(3).classList.add("sort-ascending");
+                // Since there would normally be no more sort, here indicate the default sort 
+                // TODO reenable this code (default is now that most recent is at the top, not bottom
+                // document.getElementById("list-table").firstChild.firstChild.children.item(3).classList.add("sort-ascending");
                 sortmode = 0;
             }
             else {
@@ -140,14 +163,21 @@ function displayList(listName) {
                 this.classList.add("sort-ascending");
             }
 
+            global_sortmode = sortmode;
+            global_sortFunc = headerCompFns[this.innerHTML];
             displayEntries(document.getElementsByClassName("selected-list")[0].getAttribute("id"), sortmode, headerCompFns[this.innerHTML]);
         });
         headerElement.innerHTML = header;
         headerRow.appendChild(headerElement);
     }
 
+    // Add deletion element
+    const deleteHeader = document.createElement("th");
+    deleteHeader.innerHTML = "Delete";
+    headerRow.appendChild(deleteHeader);
+
     // Default sort is by last updated
-    headerRow.children.item(3).classList.add("sort-ascending");
+    headerRow.children.item(3).classList.add("sort-descending");
 
     displayEntries(listName);
 }
