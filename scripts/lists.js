@@ -110,7 +110,7 @@ function displayEntries(listName, sortmode, sortFunc) {
             notesCell.classList.add("expanded-row-content");
             notesCell.classList.add("hide-row");
 
-            //entryRow.addEventListener("click", toggleRow);
+            entryRow.addEventListener("click", toggleRow);
         }
     });
 }

@@ -8,16 +8,15 @@ chrome.runtime.onMessage.addListener(
                     const licenseText = licenseBox.getElementsByTagName('blockquote')[0].innerHTML;
                     let authors = licenseText.substring(licenseText.indexOf("by ") + 3, licenseText.indexOf(", from")).split(', ');
                     
-                    // Handle having just 2 authors (split on " and ")
-                    // Check if there is an " and " in the list
-                    // If there is, then check the history to see if the first author has an " and " in their name
-                    // If they do, check if that original author is in the licensebox
-                    if (authors.length == 1) {
-                        const andIndex = authors[0].lastIndexOf(" and ");
-                        if (andIndex != -1) {
-                            authors = [authors[0].substring(0, andIndex), authors[0].substring(andIndex)];
-                        }
+                    // Handle having more than one author (split on " and ")
+                    // Check if there is an "and " in the last author element
+                    const andString = "and ";
+                    const lastAuthor = authors.slice(-1)[0];
+                    const andIndex = lastAuthor.lastIndexOf(andString);
+                    if (andIndex != -1) {
+                        authors[authors.length - 1] = lastAuthor.slice(andString.length);
                     }
+
                     console.log("MySCPList: licenseBox found");
                     sendResponse({authorList: authors});
                 }
