@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MySCPList",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Keep track of SCPs that you have read",
   "permissions": ["storage", "tabs", "downloads"],
   "host_permissions": ["https://scp-wiki.wikidot.com/*"],

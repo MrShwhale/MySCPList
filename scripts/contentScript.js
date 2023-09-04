@@ -2,8 +2,10 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.type === "authorRequest") {
             try {
-                const licenseBox = document.getElementsByClassName('licensebox')[0]
+                // const licenseBox = document.getElementsByClassName('licensebox')[0]
+                const licenseBox = false;
                 // If the licensebox has been found, then return the authors credited in it
+                // TODO licenseboxes are leading to things getting a little too complicated. Too many formats, and it is breaking. Fix later
                 if (licenseBox) {
                     const licenseText = licenseBox.getElementsByTagName('blockquote')[0].innerHTML;
                     let authors = licenseText.substring(licenseText.indexOf("by ") + 3, licenseText.indexOf(", from")).split(', ');

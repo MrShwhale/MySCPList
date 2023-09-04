@@ -10,7 +10,7 @@ function addButtonListeners() {
 
             // Save as file
             try {
-                var url = 'data:application/json;base64,' + btoa(result);
+                var url = 'data:application/json;unicode,' + result;
                 chrome.downloads.download({
                     url: url,
                     filename: 'MySCPList.json'
@@ -18,6 +18,7 @@ function addButtonListeners() {
                 alert("Successfully downloaded list");
             }
             catch (e) {
+                console.log(e);
                 alert("Error downloading lists");
             }
         });
@@ -36,6 +37,7 @@ function addButtonListeners() {
                 loaded = JSON.parse(reader.result);
             }
             catch (e) {
+                console.log(e);
                 alert("Error parsing JSON file");
                 return;
             }
