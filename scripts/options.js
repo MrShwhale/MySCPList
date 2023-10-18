@@ -4,13 +4,13 @@ function addButtonListeners() {
     });
 
     document.getElementById("download-list").addEventListener("click", function() {
-        chrome.storage.local.get(null, function(items) { 
+        chrome.storage.local.get(null, function(items) {
             // Convert object to a string.
-            var result = JSON.stringify(items);
+            let result = JSON.stringify(items);
 
             // Save as file
             try {
-                var url = 'data:application/json;unicode,' + result;
+                let url = 'data:application/json;unicode,' + result;
                 chrome.downloads.download({
                     url: url,
                     filename: 'MySCPList.json'
@@ -27,11 +27,10 @@ function addButtonListeners() {
     document.getElementById("restore-list").addEventListener("click", function() {
         const fileInput = document.getElementById("restore-list-file");
         
-        // Validate that the file is a JSON
-
+        // Validate that the file is JSON
         const reader = new FileReader();
 
-        reader.onload = function() {
+        reader.onload = () => {
             let loaded = undefined;
             try {
                 loaded = JSON.parse(reader.result);
@@ -53,7 +52,7 @@ function addButtonListeners() {
             }
         };
 
-        reader.onerror = function() {
+        reader.onerror = () => {
             alert("Error reading file.");
             console.log(reader.error);
         };

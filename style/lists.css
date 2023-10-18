@@ -75,8 +75,6 @@ img {
     margin: auto;
 }
 
-/* end shenanigans */
-
 #description {
     text-align: center;
     font-size: 1em;
@@ -84,6 +82,7 @@ img {
     color: darkgray;
 }
 
+/* Hidden table cell css */
 .hide-row {
     display: none !important;
 }

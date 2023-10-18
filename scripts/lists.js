@@ -1,7 +1,7 @@
 const SCP_URL = "https://scp-wiki.wikidot.com/"
 
-const toggleRow = (element) => {
-  element.target.closest("tr").getElementsByClassName('expanded-row-content')[0].classList.toggle('hide-row');
+function toggleRow(element) {
+    element.target.closest("tr").getElementsByClassName('expanded-row-content')[0].classList.toggle('hide-row');
 }
 
 // Functions used to compare various columns
@@ -44,7 +44,6 @@ function displayEntries(listName, sortmode, sortFunc) {
         if (sortmode == -1) {
             entries.reverse();
         }
-
 
         for (let i = 0; i < entries.length; i++) {
             // Make an element out of this entry
@@ -126,36 +125,24 @@ function displayList(listName) {
 
     const headerRow = listTable.insertRow(-1);
 
-    // Remove the classes associated with sorting from the HTML elements that have them
-    const removeSortClasses = () => {
-        // TODO refactor this so it doesn't look like baby's first js
-        const ascendings = document.getElementsByClassName("sort-ascending");
-        if (ascendings.length > 0) {
-            ascendings[0].classList.remove("sort-ascending");
-        }
-        else {
-            const descendings = document.getElementsByClassName("sort-descending");
-            if (descendings.length > 0) {
-                descendings[0].classList.remove("sort-descending");
-            }
-        }
-    }
-
     // Add listeners to change sort mode at the top of headers
     for (const header of HEADERS) {
         const headerElement = document.createElement("th");
-        // Sortmodes: -1 is reverse, 1 is normal
-        let sortmode;
         headerElement.addEventListener("click", function (e) {
+            // Sortmodes: -1 is reverse (descending), 1 is normal (ascending)
+            let sortmode;
+
             if (this.classList.contains("sort-ascending")) {
                 this.classList.replace("sort-ascending", "sort-descending");
                 sortmode = -1;
             }
             else {
-                removeSortClasses();
-                sortmode = 1;
-                // There will definately be no other sort classes on at this point
+                // Remove sort classes from all headers
+                const headers = Array.from(document.getElementById("list-table").firstChild.firstChild.children);
+                headers.forEach((header) => {header.classList.remove("sort-ascending", "sort-descending")});
+
                 this.classList.add("sort-ascending");
+                sortmode = 1;
             }
 
             displayEntries(document.getElementsByClassName("selected-list")[0].getAttribute("id"), sortmode, headerCompFns[this.innerHTML]);
@@ -169,12 +156,12 @@ function displayList(listName) {
     deleteHeader.innerHTML = "Delete";
     headerRow.appendChild(deleteHeader);
 
-    // Default sort is by last updated, normal mode
+    // Default sort is by last updated, ascending
     headerRow.children.item(3).classList.add("sort-ascending");
-
     displayEntries(listName, 1, headerCompFns["Entry Updated"]);
 }
 
+// Adds button listeners where they will not change (on the list buttons, for example)
 function addButtonListeners() {
     // for every button in the listbuttons thing, add an event to display that list
     for (const child of document.getElementsByClassName("list-buttons")[0].children) {
