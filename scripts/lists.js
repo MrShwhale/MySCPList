@@ -4,18 +4,17 @@ const toggleRow = (element) => {
   element.target.closest("tr").getElementsByClassName('expanded-row-content')[0].classList.toggle('hide-row');
 }
 
+// Functions used to compare various columns
 const headerCompFns = {
     "Title": (a, b) => {return a[1].localeCompare(b[1])},
     "Author(s)": (a, b) => {return a[0][2].localeCompare(b[0][2])},
-    "Rating": (a, b) => {return a[3] - (b[3])},
-    "Entry Updated": (a, b) => {return a[5] - (b[5])},
-    "Entry Added": (a, b) => {return a[6] - (b[6])}
+    "Rating": (a, b) => {return b[3] - a[3]},
+    "Entry Updated": (a, b) => {return b[5] - a[5]},
+    "Entry Added": (a, b) => {return b[6] - a[6]}
 }
 
-// Maybe refactor this? nonconst globals evoke fear
-var global_sortmode = 0;
-var global_sortFunc = () => {};
-
+// Removes all entries from the HTML table body
+// Used when changing sort modes
 function clearEntries() {
     const tableBody = document.getElementById("list-table").firstChild;
     
@@ -24,6 +23,8 @@ function clearEntries() {
     }
 }
 
+// Removes all entries from the HTML table, including headers
+// Used for changing lists
 function clearList() {
     const table = document.getElementById("list-table");
     table.innerHTML = "";
@@ -38,13 +39,12 @@ function displayEntries(listName, sortmode, sortFunc) {
         // Completed entry format: [url, title, authors, rating, notes, enteredTime, updatedTime]
         let entries = listName in data ? data[listName] : [];
 
-        if (sortmode) {
-            entries.sort(sortFunc);
-        }
-        
+        entries.sort(sortFunc)
+
         if (sortmode == -1) {
             entries.reverse();
         }
+
 
         for (let i = 0; i < entries.length; i++) {
             // Make an element out of this entry
@@ -60,30 +60,35 @@ function displayEntries(listName, sortmode, sortFunc) {
             pageLink.innerHTML = entries[i][1];
             pageTitle.appendChild(pageLink);
             pageTitleCell.appendChild(pageTitle);
+            pageTitleCell.addEventListener("click", toggleRow);
 
             // Authors
             const authorsCell = entryRow.insertCell(1);
             const authors = document.createElement("p");
             authors.innerHTML = entries[i][2].join(", ");
             authorsCell.appendChild(authors);
+            authorsCell.addEventListener("click", toggleRow);
 
             // Rating
             const ratingCell = entryRow.insertCell(2);
             const rating = document.createElement("p");
             rating.innerHTML = entries[i][3] ? entries[i][3].toString() : "None";
             ratingCell.appendChild(rating);
+            ratingCell.addEventListener("click", toggleRow);
 
             // Entered time
             const enteredTimeCell = entryRow.insertCell(3);
             const enteredTime = document.createElement("p");
             enteredTime.innerHTML = new Date(entries[i][5]).toLocaleString();
             enteredTimeCell.appendChild(enteredTime);
+            enteredTimeCell.addEventListener("click", toggleRow);
 
             // Updated time
             const updatedTimeCell = entryRow.insertCell(4);
             const updatedTime = document.createElement("p");
             updatedTime.innerHTML = new Date(entries[i][6]).toLocaleString();
             updatedTimeCell.appendChild(updatedTime);
+            updatedTimeCell.addEventListener("click", toggleRow);
 
             // Delete button
             const deleteCell = entryRow.insertCell(5);
@@ -97,7 +102,7 @@ function displayEntries(listName, sortmode, sortFunc) {
                 chrome.storage.local.get(currentList).then((data) => {
                     let currentEntries = data[currentList];
                     currentEntries.splice(entryNumber, 1);
-                    chrome.storage.local.set({[currentList]: currentEntries}).then(() => {displayEntries(currentList, global_sortmode, global_sortFunc);});
+                    chrome.storage.local.set({[currentList]: currentEntries}).then(() => {displayEntries(currentList, sortmode, sortFunc);});
                 });
             });
             deleteCell.appendChild(deleteButton);
@@ -109,8 +114,6 @@ function displayEntries(listName, sortmode, sortFunc) {
             notesCell.appendChild(notes);
             notesCell.classList.add("expanded-row-content");
             notesCell.classList.add("hide-row");
-
-            entryRow.addEventListener("click", toggleRow);
         }
     });
 }
@@ -123,6 +126,7 @@ function displayList(listName) {
 
     const headerRow = listTable.insertRow(-1);
 
+    // Remove the classes associated with sorting from the HTML elements that have them
     const removeSortClasses = () => {
         // TODO refactor this so it doesn't look like baby's first js
         const ascendings = document.getElementsByClassName("sort-ascending");
@@ -137,30 +141,23 @@ function displayList(listName) {
         }
     }
 
+    // Add listeners to change sort mode at the top of headers
     for (const header of HEADERS) {
         const headerElement = document.createElement("th");
-        // Sortmodes: 0 = no sort, -1 is reverse, 1 is normal
-        let sortmode = undefined;
+        // Sortmodes: -1 is reverse, 1 is normal
+        let sortmode;
         headerElement.addEventListener("click", function (e) {
             if (this.classList.contains("sort-ascending")) {
                 this.classList.replace("sort-ascending", "sort-descending");
                 sortmode = -1;
             }
-            else if (this.classList.contains("sort-descending")) {
-                this.classList.remove("sort-descending");
-                // Since there would normally be no more sort, here indicate the default sort 
-                // TODO reenable this code (default is now that most recent is at the top, not bottom
-                // document.getElementById("list-table").firstChild.firstChild.children.item(3).classList.add("sort-ascending");
-                sortmode = 0;
-            }
             else {
                 removeSortClasses();
                 sortmode = 1;
+                // There will definately be no other sort classes on at this point
                 this.classList.add("sort-ascending");
             }
 
-            global_sortmode = sortmode;
-            global_sortFunc = headerCompFns[this.innerHTML];
             displayEntries(document.getElementsByClassName("selected-list")[0].getAttribute("id"), sortmode, headerCompFns[this.innerHTML]);
         });
         headerElement.innerHTML = header;
@@ -172,10 +169,10 @@ function displayList(listName) {
     deleteHeader.innerHTML = "Delete";
     headerRow.appendChild(deleteHeader);
 
-    // Default sort is by last updated
-    headerRow.children.item(3).classList.add("sort-descending");
+    // Default sort is by last updated, normal mode
+    headerRow.children.item(3).classList.add("sort-ascending");
 
-    displayEntries(listName);
+    displayEntries(listName, 1, headerCompFns["Entry Updated"]);
 }
 
 function addButtonListeners() {
