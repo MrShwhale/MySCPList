@@ -40,18 +40,19 @@ async function readHistory() {
     // Request history, then find the first person who edited and return them
     // Get pageId from the WIKIREQUEST part of the page
     // The cookie token and the payload token are different. This may cause issues.
-    let author = undefined;
     const pageId = parseInt(/WIKIREQUEST\.info\.pageId = (\d+);/g.exec(document.getElementsByTagName("html")[0].innerHTML)[1]);
-    const data = {
-    "page": 1,
-    "perpage": 1000000,
-    "moduleName": "history/PageRevisionListModule",
-    "pageId": pageId,
-    "page_id": pageId,
-    "wikidot_token7": "ayylmao"
-    };
-    // Adapted from actual HTTP request made
-    const response = await fetch("https://scp-wiki.wikidot.com/ajax-module-connector.php", {
+
+    // Request data:
+    // page: 1
+    // perpage: <very large number>
+    // moduleName: history/PageRevisionListModule
+    // pageId: <pageId>
+    // page_id: <pageId>
+    // wikidot_token7: <taken from page>
+    // Adapted from actual HTTP request made by the wiki
+
+    const wikidot_token7 = document.cookie.substring(document.cookie.indexOf("=")+1;
+    const author = await fetch("https://scp-wiki.wikidot.com/ajax-module-connector.php", {
     "headers": {
     "accept": "*/*",
     "accept-language": "en-US,en;q=0.9",
@@ -63,15 +64,17 @@ async function readHistory() {
     "Referer": window.location.href,
     "Referrer-Policy": "strict-origin-when-cross-origin"
     },
-    "body": "page=1&perpage=1000000&page_id=" + pageId + "&options=%7B%22all%22%3Atrue%7D&moduleName=history%2FPageRevisionListModule&callbackIndex=2&wikidot_token7=ayylmao",
+    "body": "page=1&perpage=1000000&page_id=" + pageId + "&options=%7B%22all%22%3Atrue%7D&moduleName=history%2FPageRevisionListModule&callbackIndex=2&wikidot_token7=" + wikidot_token7,
     "method": "POST"
-    }).then(result => result.json()).then(
+    }).then((result) => result.json()).then(
     (data) => {
         // Find the last index of "WIKIDOT.page.listeners.userInfo"
         // Starting there, take the substring from the first > to the first <
+        console.log(data);
         data = data["body"];
         const lastEntryIndex = data.lastIndexOf("WIKIDOT.page.listeners.userInfo");
-        author = data.substring(data.indexOf(">", lastEntryIndex) + 1, data.indexOf("<", lastEntryIndex));
+        return data.substring(data.indexOf(">", lastEntryIndex) + 1, data.indexOf("<", lastEntryIndex));
     });
+    console.log(author);
     return {authorList: Array(author)};
 }

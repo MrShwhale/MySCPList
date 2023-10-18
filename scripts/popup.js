@@ -11,7 +11,7 @@ let already_existing = false;
  * @returns {String} The hexidecimal code
  */
 function intToHex(i) {
-    var hex = parseInt(i).toString(16);
+    let hex = parseInt(i).toString(16);
     return (hex.length < 2) ? "0" + hex : hex;
 }   
 
@@ -25,8 +25,8 @@ function makeColor(value) {
     // value must be between [0, 510]
     value = Math.min(Math.max(0,value), 1) * 510;
 
-    var redValue;
-    var greenValue;
+    let redValue;
+    let greenValue;
     if (value < 255) {
         redValue = 255;
         greenValue = Math.sqrt(value) * 16;
@@ -93,8 +93,8 @@ function markRead(listName, url, title, authors, rating, notes, time) {
 async function addEntry() {
     // Get the rating and review from the user, and the author, date, title and url from the site
 
-    let entryStatus = undefined;
-    let entryMessage = undefined;
+    let entryStatus;
+    let entryMessage;
 
     try {
       const activeTab = await getActiveTab();
@@ -214,4 +214,4 @@ async function getExistingEntry() {
 
 makeScoreSelector();
 addButtonListeners();
-await getExistingEntry();
+getExistingEntry();
