@@ -128,7 +128,7 @@ function displayList(listName) {
     // Add listeners to change sort mode at the top of headers
     for (const header of HEADERS) {
         const headerElement = document.createElement("th");
-        headerElement.addEventListener("click", function (e) {
+        headerElement.addEventListener("click", function (element) {
             // Sortmodes: -1 is reverse (descending), 1 is normal (ascending)
             let sortmode;
 

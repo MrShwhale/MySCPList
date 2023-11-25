@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(
             try {
                 // Feature idea: if the licensebox has been found, then return the authors credited in it
                 // TODO licenseboxes are leading to things getting a little too complicated. Too many formats, and it is breaking. Fix later.
-                readHistory().then(sendResponse);
+                readHistory().then((authorList) => {sendResponse(authorList)});
 
             } catch (e) {
                 // If no author can be found return as such
@@ -32,7 +32,7 @@ async function readHistory() {
     // Adapted from actual HTTP request made by the wiki
 
     const wikidot_token7 = document.cookie.substring(document.cookie.indexOf("=")+1);
-    const author = await fetch("https://scp-wiki.wikidot.com/ajax-module-connector.php", {
+    const author = fetch("https://scp-wiki.wikidot.com/ajax-module-connector.php", {
     "headers": {
     "accept": "*/*",
     "accept-language": "en-US,en;q=0.9",
@@ -51,6 +51,7 @@ async function readHistory() {
     (data) => {
         // Find the last index of "WIKIDOT.page.listeners.userInfo"
         // Starting there, take the substring from the first > to the first <
+        console.log(data);
         data = data["body"];
         const lastEntryIndex = data.lastIndexOf("WIKIDOT.page.listeners.userInfo");
         return data.substring(data.indexOf(">", lastEntryIndex) + 1, data.indexOf("<", lastEntryIndex));
