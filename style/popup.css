@@ -1,5 +1,3 @@
-@import "sigma9.css";
-
 html {
     width: 400px;
     height: auto;
@@ -16,6 +14,29 @@ textarea {
     height: 98%;
     grid-column: 2;
     grid-row: 1 / 5;
+}
+
+.header {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+#page-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    top: 38%;
+    font-family: 'Bungee';
+    font-size: 2.7em;
+    background: white;
+    color: #850005;
+}
+
+#header-image {
+    text-align: center;
 }
 
 #selector {
